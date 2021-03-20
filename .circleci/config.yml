@@ -41,5 +41,6 @@ workflows:
           path: hello_app
           docker-context: hello_app
           deploy: true
+          tag: '1.0, $CIRCLE_SHA1_SHORT'
           update-description: true          
           requires: [init]
