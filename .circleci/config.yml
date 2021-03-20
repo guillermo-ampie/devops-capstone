@@ -1,0 +1,51 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@1.5.0
+
+jobs:
+  init:
+    docker:
+      - image: python:3.7.3-stretch
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: Install dependencies
+          command: |
+            python3 -m venv .devops-capstone
+            source .devops-capstone/bin/activate
+            make install
+      - save_cache:
+          paths:
+            - ./.devops-capstone
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+      - run:
+          name: Run lint
+          command: |
+            source .devops-capstone/bin/activate
+            make lint 
+
+  build-docker:
+    executor: docker/machine
+    steps:
+      - checkout
+      - docker/check # You must have set env variables: DOCKER_LOGIN and DOCKER_PASSWORD
+      - docker/publish:
+          image: $DOCKER_LOGIN/hello-app
+          path: hello_app
+          deploy: true
+          update-description: true
+
+
+workflows:
+  default:
+    jobs:
+      - init
+      - build-docker:
+          requires: [init]

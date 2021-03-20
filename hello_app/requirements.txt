@@ -1,0 +1,8 @@
+wheel
+setuptools
+pytest
+pylint
+flask
+pylint-flask
+Flask-API
+pytest-flask
