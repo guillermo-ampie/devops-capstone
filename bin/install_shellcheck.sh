@@ -8,7 +8,7 @@ SHELLCHECK_FILE=https://github.com/koalaman/shellcheck/releases/download/stable/
 
 test -e ./bin/${COMMAND} ||
   {
-    wget -qO- "${SHELLCHECK_FILE}" | tar xC bin
+    wget -qO- "${SHELLCHECK_FILE}" | tar xJC bin
     mv ./bin/${COMMAND}-${VERSION}/${COMMAND} ./bin
     chmod +x ./bin/${COMMAND}
     rm -r ./bin/${COMMAND}-${VERSION}
