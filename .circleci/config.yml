@@ -38,7 +38,7 @@ workflows:
       - init
       - docker/publish: # Set env variables: DOCKER_LOGIN and DOCKER_PASSWORD
           image: $DOCKER_LOGIN/hello-app
-          #path: hello_app
+          path: hello_app
           docker-context: hello_app
           deploy: true
           update-description: true          
