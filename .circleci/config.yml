@@ -31,17 +31,6 @@ jobs:
             source .devops-capstone/bin/activate
             make lint 
 
-  # build-docker:
-  #   executor: docker/machine
-  #   steps:
-  #     - checkout
-  #     - docker/check # You must have set env variables: DOCKER_LOGIN and DOCKER_PASSWORD
-  #     - docker/publish:
-  #         image: $DOCKER_LOGIN/hello-app
-  #         path: hello_app
-  #         deploy: true
-  #         update-description: true
-
 
 workflows:
   default:
