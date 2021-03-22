@@ -31,6 +31,8 @@ jobs:
             source .devops-capstone/bin/activate
             make lint 
 
+#TODO1: job for smoke tests for "bare" app
+#TODO2: job for smoke tests for "containerized" app
 
 workflows:
   default:
@@ -41,6 +43,7 @@ workflows:
           path: hello_app
           docker-context: hello_app
           deploy: true
-          tag: '1.0-${CIRCLE_SHA1:0:7}'
+          # tag: '1.0-${CIRCLE_SHA1:0:7}'
+          tag: 'latest'
           update-description: true          
           requires: [init]
