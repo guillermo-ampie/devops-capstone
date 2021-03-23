@@ -31,8 +31,6 @@ jobs:
             source .devops-capstone/bin/activate
             make lint 
 
-#TODO1: job for smoke tests for "bare" app
-#TODO2: job for smoke tests for "containerized" app
 
 workflows:
   default:
@@ -55,4 +53,4 @@ workflows:
            # Here we publish the "latest" image version
           tag: 'latest'
           update-description: true          
-          requires: [init]          
+          requires: [init, docker/publish]          
