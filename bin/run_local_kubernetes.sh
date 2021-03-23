@@ -9,11 +9,12 @@ DEPLOYMENT_NAME=${DOCKER_REPOSITORY}
 CONTAINER_PORT=80
 HOST_PORT=80
 VERSION=1.0
+REPLICAS=4
 
 dockerpath=${DOCKER_HUB_ID}/${DOCKER_REPOSITORY}:${VERSION}
 
 # Run the Docker Hub container with kubernetes
-kubectl create deployment ${DEPLOYMENT_NAME} --image=${dockerpath} --replicas=4 &&
+kubectl create deployment ${DEPLOYMENT_NAME} --image=${dockerpath} --replicas=${REPLICAS} &&
     kubectl expose deployment/${DEPLOYMENT_NAME} --type="LoadBalancer" --port ${CONTAINER_PORT}
 
 # List kubernetes resources
