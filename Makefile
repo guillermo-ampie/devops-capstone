@@ -61,10 +61,12 @@ ci-validate:
 
 run-local-k8s:
 	# Before, run: minikube start
-	./bin/run_local_kubernetes.sh
+	kubectl config set-context "minikube"
+	./bin/run_k8s.sh
 
 clean-local-k8s:
-	./bin/clean_up_local_k8s_resources.sh
+	kubectl config set-context "minikube"
+	./bin/clean_up_k8s_resources.sh
 
 create-eks-cluster:
 	eksctl create cluster \
