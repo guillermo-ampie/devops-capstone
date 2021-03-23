@@ -36,21 +36,32 @@ workflows:
   default:
     jobs:
       - init
-      - docker/publish: # Set env variables: DOCKER_LOGIN and DOCKER_PASSWORD
-          image: $DOCKER_LOGIN/hello-app
-          path: hello_app
-          docker-context: hello_app
-          deploy: true
-          # An specific tag to label the specific image build version
-          tag: '1.0-${CIRCLE_SHA1:0:7}' 
-          update-description: true          
+      # - docker/publish: # Set env variables: DOCKER_LOGIN and DOCKER_PASSWORD
+      #     image: $DOCKER_LOGIN/hello-app
+      #     path: hello_app
+      #     docker-context: hello_app
+      #     deploy: true
+      #     # An specific tag to label the specific image build version
+      #     tag: '1.0-${CIRCLE_SHA1:0:7}' 
+      #     update-description: true          
+      #     requires: [init]
+      # - docker/publish: # Set env variables: DOCKER_LOGIN and DOCKER_PASSWORD
+      #     image: $DOCKER_LOGIN/hello-app
+      #     path: hello_app
+      #     docker-context: hello_app
+      #     deploy: true
+      #      # Here we publish the "latest" image version
+      #     tag: 'latest'
+      #     update-description: true          
+      #     requires: [init, docker/publish]          
+      - docker/publish:
+          matrix:
+            parameters:
+              image: [$DOCKER_LOGIN/hello-app]
+              path: [hello_app]
+              docker-context: [hello_app]
+              deploy: [true]
+              # An specific tag to label the specific image build version
+              tag: ['1.0-${CIRCLE_SHA1:0:7}', 'latest'] 
+              update-description: [true]    
           requires: [init]
-      - docker/publish: # Set env variables: DOCKER_LOGIN and DOCKER_PASSWORD
-          image: $DOCKER_LOGIN/hello-app
-          path: hello_app
-          docker-context: hello_app
-          deploy: true
-           # Here we publish the "latest" image version
-          tag: 'latest'
-          update-description: true          
-          requires: [init, docker/publish]          
