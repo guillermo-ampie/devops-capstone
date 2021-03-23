@@ -1,6 +1,11 @@
 ## The Makefile includes instructions on: 
 # environment setup, install, lint and build
 
+#Vars
+CLUSTER_NAME=hello-k8s
+REGION_NAME=us-west-2
+KEYPAIR_NAME=key-pair-us-west-2
+
 setup:
 	# Create a python virtualenv & activate it
 	python3 -m venv ~/.devops-capstone
@@ -44,14 +49,33 @@ run-app:
 build-docker:
 	./bin/build_docker.sh
 
-run-docker:
+run-docker: build-docker
 	./bin/run_docker.sh
 
-upload-docker:
+upload-docker: build-docker
 	./bin/upload_docker.sh
 
 ci-validate:
 	# Expect file: .circleci/config.yml
 	circleci config validate
 
-all: install lint test
+run-local-k8s:
+	# Before, run: minikube start
+	./bin/run_local_kubernetes.sh
+
+clean-local-k8s:
+	./bin/clean_up_local_k8s_resources.sh
+
+create-eks-cluster:
+	eksctl create cluster \
+		--name "${CLUSTER_NAME}" \
+		--region "${REGION_NAME}" \
+		--with-oidc \
+		--ssh-access \
+		--ssh-public-key "${KEYPAIR_NAME}" \
+		--managed
+
+delete-eks-cluster:
+	eksctl delete cluster --name "${CLUSTER_NAME}" --region "${REGION_NAME}"
+
+# all: install lint test
