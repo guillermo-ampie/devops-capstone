@@ -5,6 +5,8 @@
 CLUSTER_NAME=hello-k8s
 REGION_NAME=us-west-2
 KEYPAIR_NAME=key-pair-us-west-2
+DEPLOYMENT_NAME=hello-app
+NEW_IMAGE_NAME=registry.hub.docker.com/gampie/hello-app:latest
 
 setup:
 	# Create a python virtualenv & activate it
@@ -59,16 +61,17 @@ ci-validate:
 	# Expect file: .circleci/config.yml
 	circleci config validate
 
-run-local-k8s:
-	# Before, run: minikube start
+local-set-k8s-context: 
 	kubectl config set-context "minikube"
+
+local-run-k8s: local-set-k8s-context build-docker
+	# Before, run: minikube start
 	./bin/run_k8s.sh
 
-clean-local-k8s:
-	kubectl config set-context "minikube"
+local-clean-k8s: local-set-k8s-context
 	./bin/clean_up_k8s_resources.sh
 
-create-eks-cluster:
+eks-create-cluster:
 	eksctl create cluster \
 		--name "${CLUSTER_NAME}" \
 		--region "${REGION_NAME}" \
@@ -77,7 +80,13 @@ create-eks-cluster:
 		--ssh-public-key "${KEYPAIR_NAME}" \
 		--managed
 
-delete-eks-cluster:
+eks-delete-cluster:
 	eksctl delete cluster --name "${CLUSTER_NAME}" --region "${REGION_NAME}"
+
+rolling-update:
+	kubectl set image deployments/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${NEW_IMAGE_NAME}
+
+rollout-status:
+	kubectl rollout status deployment hello-app
 
 # all: install lint test
