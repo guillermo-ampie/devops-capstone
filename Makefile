@@ -7,6 +7,8 @@ REGION_NAME=us-west-2
 KEYPAIR_NAME=key-pair-us-west-2
 DEPLOYMENT_NAME=hello-app
 NEW_IMAGE_NAME=registry.hub.docker.com/gampie/hello-app:latest
+CONTAINER_PORT=80
+HOST_PORT=8080
 
 setup:
 	# Create a python virtualenv & activate it
@@ -64,13 +66,30 @@ ci-validate:
 local-set-k8s-context: 
 	kubectl config set-context "minikube"
 
-local-run-k8s: local-set-k8s-context build-docker
+local-run-k8s: local-set-k8s-context
 	# Before, run: minikube start
 	./bin/run_k8s.sh
+
+local-port-forwarding: local-set-k8s-context 
+	kubectl port-forward service/${DEPLOYMENT_NAME} ${HOST_PORT}:${CONTAINER_PORT}
 
 local-clean-k8s: local-set-k8s-context
 	./bin/clean_up_k8s_resources.sh
 
+local-rolling-update: local-set-k8s-context 
+	kubectl set image deployments/${DEPLOYMENT_NAME} \
+		${DEPLOYMENT_NAME}=${NEW_IMAGE_NAME}
+	kubectl get pods
+	kubectl describe pods | grep -i image
+
+local-rollout-status: local-set-k8s-context 
+	kubectl rollout status deployment ${DEPLOYMENT_NAME}
+	kubectl describe pods | -i grep image
+
+local-rollback: local-set-k8s-context 
+	kubectl rollout undo deployment ${DEPLOYMENT_NAME}
+	kubectl describe pods | grep -i image
+	
 eks-create-cluster:
 	eksctl create cluster \
 		--name "${CLUSTER_NAME}" \
@@ -81,12 +100,8 @@ eks-create-cluster:
 		--managed
 
 eks-delete-cluster:
-	eksctl delete cluster --name "${CLUSTER_NAME}" --region "${REGION_NAME}"
+	eksctl delete cluster --name "${CLUSTER_NAME}" \
+		--region "${REGION_NAME}"
 
-rolling-update:
-	kubectl set image deployments/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${NEW_IMAGE_NAME}
 
-rollout-status:
-	kubectl rollout status deployment hello-app
 
-# all: install lint test
