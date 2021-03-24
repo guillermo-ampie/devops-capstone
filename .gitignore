@@ -271,4 +271,4 @@ Rubric - Capstone.pdf
 hadolint
 shellcheck
 kubectl
-
+eksctl
