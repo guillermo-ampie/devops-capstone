@@ -9,8 +9,7 @@ DEPLOYMENT_NAME=hello-app
 NEW_IMAGE_NAME=registry.hub.docker.com/gampie/hello-app:latest
 CONTAINER_PORT=80
 HOST_PORT=8080
-LOCAL_CONTEXT=minikube
-CLOUD_CONTEXT=amp@hello.us-west-2.eksctl.io
+KUBECTL=./bin/kubectl
 
 setup:
 	# Create a python virtualenv & activate it
@@ -21,8 +20,8 @@ install:
 	# This should be run from inside a virtualenv
 	echo "Installing: dependencies..."
 	pip install --upgrade pip &&\
-	pip install -r hello_app/requirements.txt &&\
-	pip install "ansible-lint[community,yamllint]"
+	pip install -r hello_app/requirements.txt
+	# pip install "ansible-lint[community,yamllint]"
 	echo
 	pytest --version
 	ansible --version
@@ -68,73 +67,38 @@ ci-validate:
 	# Required file: .circleci/config.yml
 	circleci config validate
 
-local-set-k8s-context: 
-	kubectl config set-context "${LOCAL_CONTEXT}"
-
-cloud-set-k8s-context:
-	kubectl config set-context "${CLOUD_CONTEXT}"
-
-local-run-k8s: local-set-k8s-context
-	# Before, run: minikube start
+run-k8s:
+	# If using minikube, first run: minikube start
 	./bin/run_k8s.sh
 
-cloud-run-k8s: cloud-set-k8s-context
-	./bin/run_k8s.sh
-
-local-port-forwarding: local-set-k8s-context
+port-forwarding: 
 	# Needed for "minikube" only
-	kubectl port-forward service/${DEPLOYMENT_NAME} ${HOST_PORT}:${CONTAINER_PORT}
+	${KUBECTL} port-forward service/${DEPLOYMENT_NAME} ${HOST_PORT}:${CONTAINER_PORT}
 
-local-rolling-update: local-set-k8s-context
-	kubectl get deployments -o wide
-	kubectl set image deployments/${DEPLOYMENT_NAME} \
+rolling-update:
+	${KUBECTL} get deployments -o wide
+	${KUBECTL} set image deployments/${DEPLOYMENT_NAME} \
 		${DEPLOYMENT_NAME}=${NEW_IMAGE_NAME}
 	echo
-	kubectl get deployments -o wide
-	kubectl describe pods | grep -i image
-	kubectl get pods -o wide
+	${KUBECTL} get deployments -o wide
+	${KUBECTL} describe pods | grep -i image
+	${KUBECTL} get pods -o wide
 
-cloud-rolling-update: cloud-set-k8s-context
-	kubectl get deployments -o wide
-	kubectl set image deployments/${DEPLOYMENT_NAME} \
-		${DEPLOYMENT_NAME}=${NEW_IMAGE_NAME}
+rollout-status:
+	${KUBECTL} rollout status deployment ${DEPLOYMENT_NAME}
 	echo
-	kubectl get deployments -o wide
-	kubectl describe pods | grep -i image
-	kubectl get pods -o wide
+	${KUBECTL} get deployments -o wide
+	${KUBECTL} get pods -o wide
 
-local-rollout-status: local-set-k8s-context
-	kubectl rollout status deployment ${DEPLOYMENT_NAME}
+rollback:
+	${KUBECTL} get deployments -o wide
+	${KUBECTL} rollout undo deployment ${DEPLOYMENT_NAME}
+	${KUBECTL} describe pods | grep -i image
 	echo
-	kubectl get deployments -o wide
-	kubectl get pods -o wide
+	${KUBECTL} get pods -o wide
+	${KUBECTL} get deployments -o wide
 
-cloud-rollout-status: cloud-set-k8s-context 
-	kubectl rollout status deployment ${DEPLOYMENT_NAME}
-	echo
-	kubectl get deployments -o wide
-	kubectl get pods -o wide
-
-local-rollback: local-set-k8s-context
-	kubectl get deployments -o wide
-	kubectl rollout undo deployment ${DEPLOYMENT_NAME}
-	kubectl describe pods | grep -i image
-	echo
-	kubectl get pods -o wide
-	kubectl get deployments -o wide
-
-cloud-rollback: cloud-set-k8s-context 
-	kubectl get deployments -o wide
-	kubectl rollout undo deployment ${DEPLOYMENT_NAME}
-	kubectl describe pods | grep -i image
-	echo
-	kubectl get pods -o wide
-	kubectl get deployments -o wide
-
-local-clean-k8s-resources: local-set-k8s-context
-	./bin/clean_up_k8s_resources.sh
-
-cloud-clean-k8s-resources: cloud-set-k8s-context
+clean-k8s-resources:
 	./bin/clean_up_k8s_resources.sh
 
 eks-create-cluster:
