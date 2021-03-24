@@ -60,7 +60,7 @@ upload-docker: build-docker
 	./bin/upload_docker.sh
 
 ci-validate:
-	# Expect file: .circleci/config.yml
+	# Required file: .circleci/config.yml
 	circleci config validate
 
 local-set-k8s-context: 
@@ -102,6 +102,3 @@ eks-create-cluster:
 eks-delete-cluster:
 	eksctl delete cluster --name "${CLUSTER_NAME}" \
 		--region "${REGION_NAME}"
-
-
-
