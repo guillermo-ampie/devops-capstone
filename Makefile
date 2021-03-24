@@ -9,6 +9,8 @@ DEPLOYMENT_NAME=hello-app
 NEW_IMAGE_NAME=registry.hub.docker.com/gampie/hello-app:latest
 CONTAINER_PORT=80
 HOST_PORT=8080
+LOCAL_CONTEXT=minikube
+CLOUD_CONTEXT=amp@hello.us-west-2.eksctl.io
 
 setup:
 	# Create a python virtualenv & activate it
@@ -31,6 +33,9 @@ install:
 	echo
 	echo "Installing: hadolint"
 	./bin/install_hadolint.sh
+	echo
+	echo "Installing: kubectl"
+	./bin/install_kubectl
 	
 test:
 	# Additional, optional, tests could go here
@@ -64,31 +69,73 @@ ci-validate:
 	circleci config validate
 
 local-set-k8s-context: 
-	kubectl config set-context "minikube"
+	kubectl config set-context "${LOCAL_CONTEXT}"
+
+cloud-set-k8s-context:
+	kubectl config set-context "${CLOUD_CONTEXT}"
 
 local-run-k8s: local-set-k8s-context
 	# Before, run: minikube start
 	./bin/run_k8s.sh
 
-local-port-forwarding: local-set-k8s-context 
+cloud-run-k8s: cloud-set-k8s-context
+	./bin/run_k8s.sh
+
+local-port-forwarding: local-set-k8s-context
+	# Needed for "minikube" only
 	kubectl port-forward service/${DEPLOYMENT_NAME} ${HOST_PORT}:${CONTAINER_PORT}
 
-local-clean-k8s: local-set-k8s-context
-	./bin/clean_up_k8s_resources.sh
-
-local-rolling-update: local-set-k8s-context 
+local-rolling-update: local-set-k8s-context
+	kubectl get deployments -o wide
 	kubectl set image deployments/${DEPLOYMENT_NAME} \
 		${DEPLOYMENT_NAME}=${NEW_IMAGE_NAME}
-	kubectl get pods
+	echo
+	kubectl get deployments -o wide
 	kubectl describe pods | grep -i image
+	kubectl get pods -o wide
 
-local-rollout-status: local-set-k8s-context 
+cloud-rolling-update: cloud-set-k8s-context
+	kubectl get deployments -o wide
+	kubectl set image deployments/${DEPLOYMENT_NAME} \
+		${DEPLOYMENT_NAME}=${NEW_IMAGE_NAME}
+	echo
+	kubectl get deployments -o wide
+	kubectl describe pods | grep -i image
+	kubectl get pods -o wide
+
+local-rollout-status: local-set-k8s-context
 	kubectl rollout status deployment ${DEPLOYMENT_NAME}
-	kubectl describe pods | -i grep image
+	echo
+	kubectl get deployments -o wide
+	kubectl get pods -o wide
 
-local-rollback: local-set-k8s-context 
+cloud-rollout-status: cloud-set-k8s-context 
+	kubectl rollout status deployment ${DEPLOYMENT_NAME}
+	echo
+	kubectl get deployments -o wide
+	kubectl get pods -o wide
+
+local-rollback: local-set-k8s-context
+	kubectl get deployments -o wide
 	kubectl rollout undo deployment ${DEPLOYMENT_NAME}
 	kubectl describe pods | grep -i image
+	echo
+	kubectl get pods -o wide
+	kubectl get deployments -o wide
+
+cloud-rollback: cloud-set-k8s-context 
+	kubectl get deployments -o wide
+	kubectl rollout undo deployment ${DEPLOYMENT_NAME}
+	kubectl describe pods | grep -i image
+	echo
+	kubectl get pods -o wide
+	kubectl get deployments -o wide
+
+local-clean-k8s-resources: local-set-k8s-context
+	./bin/clean_up_k8s_resources.sh
+
+cloud-clean-k8s-resources: cloud-set-k8s-context
+	./bin/clean_up_k8s_resources.sh
 
 eks-create-cluster:
 	eksctl create cluster \
