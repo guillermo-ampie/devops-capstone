@@ -29,4 +29,4 @@ echo "Listing pods"
 kubectl get pods
 
 # Forward the container port to a host port
-kubectl port-forward service/${DEPLOYMENT_NAME} ${HOST_PORT}:${CONTAINER_PORT}
+#kubectl port-forward service/${DEPLOYMENT_NAME} ${HOST_PORT}:${CONTAINER_PORT}
