@@ -35,7 +35,7 @@ install:
 	./bin/install_hadolint.sh
 	echo
 	echo "Installing: kubectl"
-	./bin/install_kubectl
+	./bin/install_kubectl.sh
 	
 test:
 	# Additional, optional, tests could go here
