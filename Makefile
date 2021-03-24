@@ -98,8 +98,8 @@ rollback:
 	${KUBECTL} get pods -o wide
 	${KUBECTL} get deployments -o wide
 
-clean-k8s-resources:
-	./bin/clean_up_k8s_resources.sh
+cleanup-k8s-resources:
+	./bin/cleanup_k8s_resources.sh
 
 eks-create-cluster:
 	eksctl create cluster \
