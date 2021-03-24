@@ -2,7 +2,7 @@
 # environment setup, install, lint and build
 
 #Vars
-CLUSTER_NAME=hello-k8s
+CLUSTER_NAME=hello
 REGION_NAME=us-west-2
 KEYPAIR_NAME=key-pair-us-west-2
 DEPLOYMENT_NAME=hello-app
@@ -89,7 +89,7 @@ local-rollout-status: local-set-k8s-context
 local-rollback: local-set-k8s-context 
 	kubectl rollout undo deployment ${DEPLOYMENT_NAME}
 	kubectl describe pods | grep -i image
-	
+
 eks-create-cluster:
 	eksctl create cluster \
 		--name "${CLUSTER_NAME}" \
