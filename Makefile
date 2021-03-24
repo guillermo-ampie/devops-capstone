@@ -10,6 +10,7 @@ NEW_IMAGE_NAME=registry.hub.docker.com/gampie/hello-app:latest
 CONTAINER_PORT=80
 HOST_PORT=8080
 KUBECTL=./bin/kubectl
+EKSCTL=./bin/eksctl
 
 setup:
 	# Create a python virtualenv & activate it
@@ -24,8 +25,8 @@ install:
 	# pip install "ansible-lint[community,yamllint]"
 	echo
 	pytest --version
-	ansible --version
-	ansible-lint --version
+	# ansible --version
+	# ansible-lint --version
 	echo
 	echo "Installing: shellcheck"
 	./bin/install_shellcheck.sh
@@ -35,6 +36,9 @@ install:
 	echo
 	echo "Installing: kubectl"
 	./bin/install_kubectl.sh
+	echo
+	echo "Installing: eksctl"
+	./bin/install_eksctl.sh
 	
 test:
 	# Additional, optional, tests could go here
@@ -102,7 +106,7 @@ cleanup-k8s-resources:
 	./bin/cleanup_k8s_resources.sh
 
 eks-create-cluster:
-	eksctl create cluster \
+	${EKSCTL} create cluster \
 		--name "${CLUSTER_NAME}" \
 		--region "${REGION_NAME}" \
 		--with-oidc \
@@ -111,5 +115,5 @@ eks-create-cluster:
 		--managed
 
 eks-delete-cluster:
-	eksctl delete cluster --name "${CLUSTER_NAME}" \
+	${EKSCTL} delete cluster --name "${CLUSTER_NAME}" \
 		--region "${REGION_NAME}"
