@@ -1,0 +1,22 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: hello
+  region: us-west-2
+
+iam:
+  withOIDC: true
+
+nodeGroups:
+  - name: ng-1
+    instanceType: t2.small
+    amiFamily: AmazonLinux2
+    # desiredCapacity: 2
+    minSize: 2
+    maxSize: 3
+    volumeSize: 80
+    ssh:
+      allow: true
+      publicKeyName: key-pair-us-west-2
+
