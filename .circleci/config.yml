@@ -46,7 +46,6 @@ workflows:
               # We publish two images with different version tags: 
               # - pipeline specific execution tagged version
               # - "latest"
-              # tag: ['1.0-${CIRCLE_SHA1:0:7}', 'latest'] 
               tag: ['$(<hello_app/VERSION.txt)-${CIRCLE_SHA1:0:7}', 'latest']               
               update-description: [true]    
           requires: [init]
