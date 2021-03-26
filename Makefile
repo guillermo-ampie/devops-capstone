@@ -52,7 +52,6 @@ lint:
 	./bin/hadolint hello_app/Dockerfile
 	# https://www.pylint.org/: a linter for Python source code 
 	# This should be run from inside a virtualenv
-	#pylint --disable=R,C,W1203 app.py
 	pylint --output-format=colorized --disable=C hello_app/hello.py
 
 run-app:
