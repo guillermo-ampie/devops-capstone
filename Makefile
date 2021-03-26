@@ -42,8 +42,8 @@ install:
 	
 test:
 	# Additional, optional, tests could go here
-	#python -m pytest -vv --cov=myrepolib tests/*.py
-	#python -m pytest --nbval notebook.ipynb
+	#python -m pytest -vv hello_app/hello.py
+	#python -m pytest 
 
 lint:
 	# https://github.com/koalaman/shellcheck: a linter for shell scripts
