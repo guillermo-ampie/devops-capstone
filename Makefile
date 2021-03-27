@@ -10,7 +10,6 @@ NEW_IMAGE_NAME=registry.hub.docker.com/gampie/hello-app:latest
 CONTAINER_PORT=80
 HOST_PORT=8080
 KUBECTL=./bin/kubectl
-EKSCTL=./bin/eksctl
 
 setup:
 	# Create a python virtualenv & activate it
@@ -105,15 +104,8 @@ cleanup-k8s-resources:
 	./bin/cleanup_k8s_resources.sh
 
 eks-create-cluster:
-	# ${EKSCTL} create cluster \
-	# 	--name "${CLUSTER_NAME}" \
-	# 	--region "${REGION_NAME}" \
-	# 	--with-oidc \
-	# 	--ssh-access \
-	# 	--ssh-public-key "${KEYPAIR_NAME}" \
-	# 	--managed
-	${EKSCTL} create cluster --config-file=hello_cluster.yml 
+	./bin/eks_create_cluster.sh
 
 eks-delete-cluster:
-	${EKSCTL} delete cluster --name "${CLUSTER_NAME}" \
+	./bin/eks delete cluster --name "${CLUSTER_NAME}" \
 		--region "${REGION_NAME}"
