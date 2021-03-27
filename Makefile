@@ -90,7 +90,6 @@ rollout-status:
 	${KUBECTL} rollout status deployment ${DEPLOYMENT_NAME}
 	echo
 	${KUBECTL} get deployments -o wide
-	${KUBECTL} get pods -o wide
 
 rollback:
 	${KUBECTL} get deployments -o wide
