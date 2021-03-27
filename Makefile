@@ -106,5 +106,5 @@ eks-create-cluster:
 	./bin/eks_create_cluster.sh
 
 eks-delete-cluster:
-	./bin/eks delete cluster --name "${CLUSTER_NAME}" \
+	./bin/eksctl delete cluster --name "${CLUSTER_NAME}" \
 		--region "${REGION_NAME}"
