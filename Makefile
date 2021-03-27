@@ -69,9 +69,9 @@ ci-validate:
 	# Required file: .circleci/config.yml
 	circleci config validate
 
-run-k8s: eks-create-cluster
+k8s-deployment: eks-create-cluster
 	# If using minikube, first run: minikube start
-	./bin/run_k8s.sh
+	./bin/k8s_deployment.sh
 
 port-forwarding: 
 	# Needed for "minikube" only
@@ -100,8 +100,8 @@ rollback:
 	${KUBECTL} get pods -o wide
 	${KUBECTL} get deployments -o wide
 
-cleanup-k8s-resources:
-	./bin/cleanup_k8s_resources.sh
+k8s-cleanup-resources:
+	./bin/k8s_cleanup_resources.sh
 
 eks-create-cluster:
 	./bin/eks_create_cluster.sh
