@@ -44,8 +44,9 @@ workflows:
               docker-context: [hello_app]
               deploy: [true]
               # We publish two images with different version tags: 
-              # - pipeline specific execution tagged version
+              # - version tagged
               # - "latest"
-              tag: ['$(<hello_app/VERSION.txt)-${CIRCLE_SHA1:0:7}', 'latest']               
+              # tag: ['$(<hello_app/VERSION.txt)-${CIRCLE_SHA1:0:7}', 'latest']
+              tag: ['$(<hello_app/VERSION.txt)', 'latest']
               update-description: [true]    
           requires: [init]
