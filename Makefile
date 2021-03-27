@@ -69,7 +69,7 @@ ci-validate:
 	# Required file: .circleci/config.yml
 	circleci config validate
 
-run-k8s:
+run-k8s: eks-create-cluster
 	# If using minikube, first run: minikube start
 	./bin/run_k8s.sh
 
