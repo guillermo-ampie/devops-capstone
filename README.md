@@ -12,7 +12,7 @@ This project "operationalize" a sample python/[flask](https://flask.palletsproje
 demo app ["hello"](./hello_app/hello.py), using [CircleCI](https://www.circleci.com) and
  a [kubernetes](https://kubernetes.io/)(K8S) cluster deployed in [AWS EKS](https://aws.amazon.com/eks/)(Amazon Elastic Kubernetes Services):
 
-* In a [CircleCI](https://www.circleci/com) pipeline we lint the project's code, build
+* In a [CircleCI](https://www.circleci.com) pipeline we lint the project's code, build
  a [Docker](https://www.docker.com/resources/what-container) image and deploy it to a public
 Docker Registry: [Docker Hub](https://hub.docker.com/repository/docker/gampie/hello-app)
 * Then in a [AWS EKS](https://aws.amazon.com/eks/) cluster, we run the application
