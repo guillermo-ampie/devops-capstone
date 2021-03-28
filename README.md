@@ -80,10 +80,10 @@ Alternatively you can use `curl`: `curl localhost:80` or `curl LOAD_BALANCER_IP:
 
 The following shell scripts are invoked from the [Makefile](./Makefile)
 
-* [./bin/eks_create_cluster.sh](./bin/eks_create_cluster.sh): creates the EKS cluster
-* [./bin/install_eksctl.sh](./bin/install_eksctl.sh): installs the eksctl tool
-* [./bin/install_hadolint.sh](./bin/install_hadolint.sh): installs the hadolint linter(for Dockerfiles) tool
-* [./bin/install_kubectl.sh](./bin/install_kubectl.sh): install the kubectl tool to control K8S clusters
-* [./bin/install_shellcheck.sh](./bin/install_shellcheck.sh): installs the shellcheck(for shell scripts) linter tool
-* [./bin/k8s_cleanup_resources.sh](./bin/k8s_cleanup_resources.sh): deletes services and deployments in a K8S cluster
-* [./bin/k8s_deployment.sh](./bin/k8s_deployment.sh): deploys and exposes a service in the K8S cluster
+* [eks_create_cluster.sh](./bin/eks_create_cluster.sh): creates the EKS cluster
+* [install_eksctl.sh](./bin/install_eksctl.sh): installs the eksctl tool
+* [install_hadolint.sh](./bin/install_hadolint.sh): installs the hadolint linter(for Dockerfiles) tool
+* [install_kubectl.sh](./bin/install_kubectl.sh): install the kubectl tool to control K8S clusters
+* [install_shellcheck.sh](./bin/install_shellcheck.sh): installs the shellcheck(for shell scripts) linter tool
+* [k8s_cleanup_resources.sh](./bin/k8s_cleanup_resources.sh): deletes services and deployments in a K8S cluster
+* [k8s_deployment.sh](./bin/k8s_deployment.sh): deploys and exposes a service in the K8S cluster
