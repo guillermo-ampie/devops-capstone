@@ -9,7 +9,7 @@ This capstone project showcases the use of several CI/CD tools and cloud service
 ### Introduction
 
 This project "operationalize" a sample python/[flask](https://flask.palletsprojects.com/)
-demo app ["hello"](./hello_app/hello.py), using [CircleCI](https://www.circleci/com) and
+demo app ["hello"](./hello_app/hello.py), using [CircleCI](https://www.circleci.com) and
  a [kubernetes](https://kubernetes.io/)(K8S) cluster deployed in [AWS EKS](https://aws.amazon.com/eks/)(Amazon Elastic Kubernetes Services):
 
 * In a [CircleCI](https://www.circleci/com) pipeline we lint the project's code, build
