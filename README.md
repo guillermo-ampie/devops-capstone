@@ -60,6 +60,7 @@ Alternatively you can use `curl`: `curl localhost:80` or `curl LOAD_BALANCER_IP:
 * [AWS CLI](https://aws.amazon.com/cli/) - Command-line tool for AWS
 * [CloudFormation](https://aws.amazon.com/cloudformation/) - Infrastructure as Code
 * [kubectl](https://kubernetes.io/docs/reference/kubectl/) - command line tool to control Kubernetes clusters
+* [Docker Hub](https://hub.docker.com/repository/docker/gampie/hello-app) - Container images repository service
 
 #### CicleCI Variables
 
