@@ -23,7 +23,7 @@ jobs:
             make install
       - save_cache:
           paths:
-            - ./.devops-capstone
+            - ./.devops-capstone  # TODO: Include in cache the "bin" directory
           key: v1-dependencies-{{ checksum "hello_app/requirements.txt" }}
       - run:
           name: Run lint
