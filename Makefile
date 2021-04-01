@@ -16,7 +16,7 @@ setup:
 	python3 -m venv ~/.devops-capstone
 	# source ~/.devops-capstone/bin/activate 
 
-install:	# Add a Docker analysis (DevSecOps)
+install:	# TODO: Add a Docker analysis (DevSecOps)
 	# This should be run from inside a virtualenv
 	echo "Installing: dependencies..."
 	pip install --upgrade pip &&\
