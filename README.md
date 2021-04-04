@@ -41,12 +41,12 @@ The project includes the following main tasks:
 
 The CirclCI pipeline([config.yml](.circleci/config.yml)) will execute the following steps automatically:
 
-* Make a python3 virtual environment and activate it
+* `make setup`
 * `make install`
 * `make lint`
 * Build and publish the container image
 
-The "see" the app working write your deployment's IP into your browser using port 80, like
+To verify that the app is working, write your deployment's IP into your browser using port 80, like
 `http://localhost:80` or `http://LOAD_BALANCER_IP:80` (according to your environment).
 
 Alternatively, you can use `curl`: `curl localhost:80` or `curl LOAD_BALANCER_IP:80`
