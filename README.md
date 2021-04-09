@@ -68,8 +68,8 @@ Alternatively, you can use `curl`: `curl localhost:80` or `curl LOAD_BALANCER_IP
   so to be able to `build` and `publish` your images, you need to set up the following environment
   variables in your CircleCI project with your DockerHub account's values:
 
-* DOCKER_PASSWORD
 * DOCKER_LOGIN
+* DOCKER_PASSWORD
   
 ### Main Files
 
